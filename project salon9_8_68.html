@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ร้านเสริมสวยมุกซาลอน</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fdf5f5;
+            margin: 0;
+            padding: 0;
+            background-size: cover;
+            background-position: center;
+        }
+
+        header {
+            background: #000000;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content {
+            flex: 1;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #d0ccff;
+            padding: 10px;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        nav button.active {
+            border-bottom: 3px solid #ff6666;
+        }
+
+        .page {
+            display: none;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .activePage {
+            display: block;
+        }
+
+        .box {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        input,
+        select,
+        button,
+        textarea {
+            margin: 8px 0;
+            padding: 10px;
+            width: 90%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        button {
+            background: #33d641;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #b0226d;
+        }
+
+        .stars span {
+            font-size: 24px;
+            cursor: pointer;
+            color: #ddd;
+        }
+
+        .stars span.active {
+            color: gold;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .message {
+            font-size: 22px;
+            font-weight: bold;
+            color: #000000;
+            margin-top: 20px;
+        }
+
+        .admin-only {
+            display: none;
+        }
+
+        .logged-in .admin-only {
+            display: block;
+        }
+
+        .review-item {
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.7);
+            margin: 10px 0;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .review-name {
+            font-weight: bold;
+        }
+
+        .review-stars {
+            color: gold;
+        }
+
+        .login-btn {
+            background: #ff3333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .logout-btn {
+            background: #ff3333;
+        }
+
+        .line-icon {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            color: #ff3333;
+            font-weight: bold;
+        }
+
+        .admin-panel {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+        }
+
+        .review-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .review-modal-content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .delete-btn {
+            background: #ff3333;
+            margin-left: 10px;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .service-item,
+        .holiday-item,
+        .promo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 0;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 6px;
+        }
+
+        .promo-item {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+
+        .booking-item {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+
+        #holidayList li,
+        #servicesList li {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 8px;
+            border-radius: 6px;
+            margin: 5px 0;
+        }
+
+        /* สไตล์สำหรับการตั้งค่า LINE */
+        .line-config {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .test-result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .config-section {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        .instructions {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .instructions ol {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .qr-code img {
+            max-width: 200px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background: white;
+        }
+
+        .line-login-btn {
+            background: #06C755;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .line-login-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .redirect-uri-box {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            word-break: break-all;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <h1>ร้านเสริมสวยมุกซาลอน ยินดีให้บริการค่ะ</h1>
+        </div>
+        <div class="admin-panel">
+            <button id="loginBtn" class="login-btn" onclick="loginWithLine()">
+                <span class="line-icon">L</span> ล็อคอินสำหรับเจ้าของร้าน
+            </button>
+            <div id="adminMenu" class="admin-only">
+                <button onclick="showPage('manage')">จัดการร้าน</button>
+                <button class="logout-btn" onclick="logout()">ล็อกเอาท์</button>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <button class="active" onclick="showPage('home')">หน้าหลัก</button>
+        <button onclick="showPage('booking')">จองคิว</button>
+        <button onclick="showPage('promo')">โปรโมชัน</button>
+        <button onclick="showPage('reviews')">รีวิว</button>
+    </nav>
+
+    <!-- หน้า Home -->
+    <div id="home" class="page activePage">
+        <div class="box">
+            <h2>บริการของทางร้าน</h2>
+            <ul id="servicesList" style="text-align:left; list-style-type: none; padding: 0;">
+                <!-- เนื้อหาจะถูกโหลดจาก localStorage -->
+            </ul>
+            <div class="admin-only">
+                <h3>จัดการบริการ</h3>
+                <input type="text" id="newServiceName" placeholder="ชื่อบริการ">
+                <input type="text" id="newServicePrice" placeholder="ราคา">
+                <button onclick="addService()">เพิ่มบริการ</button>
+            </div>
+
+            <h3>วันหยุดของร้าน</h3>
+            <ul id="holidayList" style="color:red; text-align:left; list-style-type: none; padding: 0;"></ul>
+            <div class="admin-only">
+                <input type="date" id="newHoliday">
+                <button onclick="addHoliday()">เพิ่มวันหยุด</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- หน้าโปรโมชัน -->
+    <div id="promo" class="page">
+        <div class="box">
+            <h2>โปรโมชั่น</h2>
+            <div id="promoContent">
+                <!-- เนื้อหาจะถูกโหลดจาก localStorage -->
+            </div>
+
+            <div class="admin-only">
+                <h3>จัดการโปรโมชัน</h3>
+                <input type="text" id="promoTitle" placeholder="หัวข้อโปรโมชัน">
+                <textarea id="promoDescription" placeholder="รายละเอียดโปรโมชัน" rows="3"></textarea>
+                <input type="file" id="promoImageFile" accept="image/*">
+                <button onclick="addPromo()">เพิ่มโปรโมชัน</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- หน้า Booking -->
+    <div id="booking" class="page">
+        <!-- ฟอร์มกรอกข้อมูล -->
+        <div class="box" id="formBox">
+            <h2>กรอกข้อมูลลูกค้า</h2>
+            <input type="text" id="name" placeholder="ชื่อของคุณ">
+            <input type="tel" id="phone" placeholder="เบอร์โทรศัพท์">
+            <button onclick="goToCalendar()">ยืนยัน</button>
+        </div>
+
+        <!-- ปฏิทิน -->
+        <div class="box" id="calendarBox" style="display:none;">
+            <h2>เลือกวันและเวลา</h2>
+            <input type="date" id="date">
+            <select id="time"></select>
+            <button onclick="reviewBooking()">ถัดไป</button>
+        </div>
+
+        <!-- หน้าสรุป -->
+        <div class="box" id="confirmBox" style="display:none;">
+            <h2>ข้อมูลการจอง</h2>
+            <p id="bookingInfo"></p>
+            <button onclick="lockBooking()">ยืนยันการจอง</button>
+            <button onclick="editBooking()">แก้ไข</button>
+            <button onclick="cancelBooking()">ยกเลิกการจอง</button>
+        </div>
+    </div>
+
+    <!-- หน้ารีวิว -->
+    <div id="reviews" class="page">
+        <div class="box">
+            <h2>รีวิวจากลูกค้า</h2>
+            <div id="reviewsList">
+                <!-- รีวิวจะถูกแสดงที่นี่ -->
+            </div>
+        </div>
+    </div>
+
+    <!-- หน้าจัดการร้าน (สำหรับเจ้าของร้าน) -->
+    <div id="manage" class="page">
+        <div class="box">
+            <h2>จัดการร้าน</h2>
+            <button onclick="showPage('home')">จัดการบริการและวันหยุด</button>
+            <button onclick="showPage('promo')">จัดการโปรโมชัน</button>
+
+            <div class="box">
+                <h2>จัดการพื้นหลังร้าน</h2>
+                <input type="file" id="bgUpload" accept="image/*" style="display: none;"
+                    onchange="uploadBackground(event)">
+                <button onclick="document.getElementById('bgUpload').click()">อัปโหลดพื้นหลังใหม่</button>
+                <button onclick="removeBackground()" class="delete-btn">ลบพื้นหลัง</button>
+            </div>
+
+            <div class="box">
+                <h2>ตั้งค่าแจ้งเตือน LINE</h2>
+                <div class="line-config">
+                    <div class="instructions">
+                        <h3>ขั้นตอนการตั้งค่า LINE Messaging API</h3>
+                        <ol>
+                            <li>ไปที่ <a href="https://developers.line.biz/console/" target="_blank">LINE Developers Console</a></li>
+                            <li>เลือก Channel ของคุณ (ประเภท Messaging API)</li>
+                            <li>ไปที่แท็บ "Messaging API"</li>
+                            <li>คัดลอก "Channel Access Token" วางในช่องด้านล่าง</li>
+                            <li>เพื่อหา User ID:
+                                <ol>
+                                    <li>เปิดแอป LINE ในโทรศัพท์</li>
+                                    <li>เพิ่มบอทของคุณเป็นเพื่อน (โดยการสแกน QR Code จากหน้า Channel)</li>
+                                    <li>ส่งข้อความใดๆ ไปให้บอท</li>
+                                    <li>กดปุ่ม "ดึง User ID อัตโนมัติ" ด้านล่าง</li>
+                                </ol>
+                            </li>
+                        </ol>
+                        
+                        <div class="redirect-uri-box">
+                            <strong>Redirect URI สำหรับ LINE Login:</strong><br>
+                            <span id="redirectUriDisplay"></span>
+                        </div>
+                        
+                        <p><strong>คำแนะนำ:</strong> คัดลอก URL ด้านบนไปใส่ใน LINE Developer Console → Channel → LINE Login → Redirect URLs</p>
+                    </div>
+
+                    <div class="config-section">
+                        <label for="lineChannelToken">Channel Access Token:</label>
+                        <input type="password" id="lineChannelToken" placeholder="ใส่ Channel Access Token"
+                            style="width: 100%;">
+                        <small>ค้นหาได้ที่ LINE Developers Console > Channel > Messaging API</small>
+                    </div>
+
+                    <div class="config-section">
+                        <label for="lineUserId">User ID ของคุณ:</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="lineUserId" placeholder="ใส่ User ID ของคุณ" style="flex: 1;">
+                            <button onclick="getUserIdWithLineLogin()" style="width: auto; white-space: nowrap;">ดึง User ID อัตโนมัติ</button>
+                        </div>
+                    </div>
+
+                    <button onclick="saveLineConfig()">บันทึกการตั้งค่า</button>
+                    <button onclick="testLineConnection()" style="background: #2196F3;">ทดสอบการเชื่อมต่อ</button>
+
+                    <div id="testResult" class="test-result"></div>
+                </div>
+            </div>
+
+            <h3>การจองล่าสุด</h3>
+            <div id="bookingList">
+                <!-- รายการจองจะแสดงที่นี่ -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal สำหรับรีวิว -->
+    <div class="review-modal" id="reviewModal">
+        <div class="review-modal-content">
+            <h2>รีวิวการใช้บริการ</h2>
+            <input type="text" id="reviewerName" placeholder="ชื่อของคุณ (ไม่จำเป็น)">
+            <div class="stars" id="modalStars">
+                <span onclick="setModalRating(1)">★</span>
+                <span onclick="setModalRating(2)">★</span>
+                <span onclick="setModalRating(3)">★</span>
+                <span onclick="setModalRating(4)">★</span>
+                <span onclick="setModalRating(5)">★</span>
+            </div>
+            <textarea id="reviewComment" placeholder="ความคิดเห็น (ไม่จำเป็น)" rows="3"></textarea>
+            <button onclick="submitReview()">ส่งรีวิว</button>
+            <p id="thanksMsg"></p>
+        </div>
+    </div>
+
+    <!-- LINE Login Modal -->
+    <div id="lineLoginModal" class="review-modal">
+        <div class="review-modal-content">
+            <h2>ล็อคอินด้วย LINE</h2>
+            <p>เพื่อดึง User ID อัตโนมัติ กรุณาล็อคอินด้วยบัญชี LINE ของคุณ</p>
+            
+            <div id="manualMethod">
+                <h3>วิธีดึง User ID แบบ Manual</h3>
+                <ol style="text-align: left;">
+                    <li>ไปที่ <a href="https://developers.line.biz/console/" target="_blank">LINE Developers Console</a></li>
+                    <li>เลือก Channel ของคุณ</li>
+                    <li>ไปที่แท็บ "Messaging API"</li>
+                    <li>เลื่อนลงไปที่ส่วน "Webhook"</li>
+                    <li>กดปุ่ม "Verify" (ถ้ายังไม่เคย verify)</li>
+                    <li>ส่งข้อความใดๆ ไปให้บอทของคุณในแอป LINE</li>
+                    <li>User ID จะแสดงในตาราง "Webhook event list"</li>
+                    <li>คัดลอก User ID นั้นมาใส่ในช่องด้านบน</li>
+                </ol>
+            </div>
+            
+            <button onclick="closeLineLoginModal()" style="background: #ff3333; margin-top: 10px;">ปิด</button>
+        </div>
+    </div>
+    <script>
+        // ตัวแปร global
+        const timeSelect = document.getElementById("time");
+        for (let h = 8; h <= 20; h++) {
+            let option = document.createElement("option");
+            option.value = `${h}:00`;
+            option.textContent = `${h}:00`;
+            timeSelect.appendChild(option);
+        }
+
+        let booking = {};
+        let bookingLocked = false;
+        let currentRating = 0;
+        let isLoggedIn = false;
+        let holidays = JSON.parse(localStorage.getItem('holidays')) || ["2025-09-01", "2025-09-10"];
+        let services = JSON.parse(localStorage.getItem('services')) || [
+            "สระ - ไดร์ ผมตรง 60-150 บาท",
+            "สระ - ไดร์ หนีบ 80-150 บาท",
+            "สระผม - เด็กนักเรียน 20-80 บาท",
+            "สปานาโน เริ่มต้นที่ 399 บาท"
+        ];
+        let promotions = JSON.parse(localStorage.getItem('promotions')) || [];
+        let reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+        let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+
+        // ข้อมูลการตั้งค่า LINE
+        let lineConfig = JSON.parse(localStorage.getItem('lineConfig')) || {
+            channelToken: '',
+            userId: ''
+        };
+
+        // แสดง Redirect URI
+        document.getElementById('redirectUriDisplay').textContent = window.location.href;
+
+        // โหลดการตั้งค่า LINE เมื่อหน้าเว็บโหลด
+        window.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('lineChannelToken').value = lineConfig.channelToken || '';
+            document.getElementById('lineUserId').value = lineConfig.userId || '';
+        });
+
+        // ฟังก์ชันแสดงหน้า
+        function showPage(page) {
+            document.querySelectorAll(".page").forEach(p => p.classList.remove("activePage"));
+            document.getElementById(page).classList.add("activePage");
+            document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+
+            // หาปุ่มที่เกี่ยวข้องกับหน้าและตั้งค่าเป็น active
+            const navButtons = document.querySelectorAll("nav button");
+            for (let btn of navButtons) {
+                if (btn.textContent === "หน้าหลัก" && page === "home") btn.classList.add("active");
+                if (btn.textContent === "จองคิว" && page === "booking") btn.classList.add("active");
+                if (btn.textContent === "โปรโมชัน" && page === "promo") btn.classList.add("active");
+                if (btn.textContent === "รีวิว" && page === "reviews") btn.classList.add("active");
+            }
+
+            if (page === "booking") resetBookingForm();
+            if (page === "home") {
+                renderHolidays();
+                renderServices();
+            }
+            if (page === "promo") renderPromotions();
+            if (page === "reviews") renderReviews();
+            if (page === "manage") renderBookings();
+        }
+
+        // ฟังก์ชันเริ่มต้นกระบวนการล็อคอิน LINE
+        function getUserIdWithLineLogin() {
+            const channelToken = document.getElementById('lineChannelToken').value;
+
+            if (!channelToken) {
+                alert('กรุณากรอก Channel Access Token ก่อน');
+                return;
+            }
+
+            // เปิด modal สำหรับล็อคอิน LINE
+            openLineLoginModal();
+        }
+
+        // ฟังก์ชันเปิด modal ล็อคอิน LINE
+        function openLineLoginModal() {
+            document.getElementById("lineLoginModal").style.display = "flex";
+        }
+
+        // ฟังก์ชันปิด modal ล็อคอิน LINE
+        function closeLineLoginModal() {
+            document.getElementById("lineLoginModal").style.display = "none";
+        }
+
+        // ฟังก์ชันบันทึกการตั้งค่า LINE
+        function saveLineConfig() {
+            lineConfig.channelToken = document.getElementById('lineChannelToken').value;
+            lineConfig.userId = document.getElementById('lineUserId').value;
+
+            localStorage.setItem('lineConfig', JSON.stringify(lineConfig));
+            alert('บันทึกการตั้งค่า LINE เรียบร้อยแล้ว');
+        }
+
+        // ฟังก์ชันทดสอบการเชื่อมต่อ LINE
+        function testLineConnection() {
+            if (!lineConfig.channelToken || !lineConfig.userId) {
+                alert('กรุณากรอก Channel Access Token และ User ID ให้ครบถ้วน');
+                return;
+            }
+
+            const testResult = document.getElementById('testResult');
+            testResult.style.display = 'block';
+            testResult.className = 'test-result';
+            testResult.innerHTML = 'กำลังทดสอบการเชื่อมต่อ...';
+
+            sendToLine("🔔 ทดสอบการแจ้งเตือนจากร้านเสริมสวยมุกซาลอน\nระบบแจ้งเตือนทำงานปกติแล้ว")
+                .then(() => {
+                    testResult.classList.add('success');
+                    testResult.innerHTML = '✅ การทดสอบสำเร็จ! ควรมีข้อความแจ้งเตือนไปยัง LINE ของคุณแล้ว';
+                })
+                .catch(error => {
+                    testResult.classList.add('error');
+                    testResult.innerHTML = '❌ การทดสอบล้มเหลว: ' + error;
+                });
+        }
+
+        // ฟังก์ชันส่งข้อความผ่าน LINE Messaging API
+        async function sendToLine(message) {
+            if (!lineConfig.channelToken || !lineConfig.userId) {
+                console.error("ไม่ได้ตั้งค่า LINE Messaging API");
+                throw new Error("ไม่ได้ตั้งค่า LINE Messaging API");
+            }
+
+            try {
+                const response = await fetch("https://api.line.me/v2/bot/message/push", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + lineConfig.channelToken
+                    },
+                    body: JSON.stringify({
+                        to: lineConfig.userId,
+                        messages: [{
+                            type: "text",
+                            text: message
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`LINE API error: ${response.status} - ${errorText}`);
+                }
+
+                const data = await response.json();
+                console.log("ส่งข้อความผ่าน LINE สำเร็จ:", data);
+                return data;
+            } catch (error) {
+                console.error("เกิดข้อผิดพลาดในการส่งข้อความผ่าน LINE:", error);
+                throw error;
+            }
+        }
+
+        // ฟังก์ชันรีเซ็ตฟอร์มจอง
+        function resetBookingForm() {
+            booking = {};
+            bookingLocked = false;
+            document.querySelectorAll("#booking .box").forEach(b => b.style.display = "none");
+            document.getElementById("formBox").style.display = "block";
+            document.getElementById("name").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("date").value = "";
+        }
+
+        // ฟังก์ชันไปยังหน้าปฏิทิน
+        function goToCalendar() {
+            booking.name = document.getElementById("name").value;
+            booking.phone = document.getElementById("phone").value;
+            if (!booking.name || !booking.phone) {
+                alert("กรุณากรอกข้อมูลให้ครบ");
+                return;
+            }
+            document.getElementById("formBox").style.display = "none";
+            document.getElementById("calendarBox").style.display = "block";
+        }
+
+        // ฟังก์ชันตรวจสอบการจอง
+        function reviewBooking() {
+            booking.date = document.getElementById("date").value;
+            booking.time = document.getElementById("time").value;
+            if (!booking.date || !booking.time) {
+                alert("กรุณาเลือกวันและเวลา");
+                return;
+            }
+            if (holidays.includes(booking.date)) {
+                alert("วันดังกล่าวร้านปิด กรุณาเลือกวันอื่น");
+                return;
+            }
+            document.getElementById("calendarBox").style.display = "none";
+            document.getElementById("confirmBox").style.display = "block";
+            document.getElementById("bookingInfo").innerText = `คุณ ${booking.name} เบอร์ ${booking.phone}\nวันที่ ${booking.date} เวลา ${booking.time}`;
+        }
+
+        // ฟังก์ชันยืนยันการจอง
+        function lockBooking() {
+            if (bookingLocked) return;
+            bookingLocked = true;
+            document.getElementById("confirmBox").innerHTML = `<p class="message">ลูกค้าได้จองเรียบร้อยแล้ว ขอบคุณค่ะ</p>`;
+
+            // บันทึกการจอง
+            bookings.push({
+                name: booking.name,
+                phone: booking.phone,
+                date: booking.date,
+                time: booking.time,
+                timestamp: new Date().toISOString()
+            });
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+
+            // ส่งการแจ้งเตือนผ่าน LINE
+            const bookingMessage = `✅ จองคิวใหม่จากเว็บไซต์
+ชื่อ: ${booking.name}
+เบอร์โทร: ${booking.phone}
+วันที่: ${booking.date}
+เวลา: ${booking.time}`;
+
+            sendToLine(bookingMessage)
+                .then(() => console.log("ส่งการแจ้งเตือนการจองคิวผ่าน LINE สำเร็จ"))
+                .catch(error => console.error("ไม่สามารถส่งการแจ้งเตือนผ่าน LINE ได้:", error));
+
+            // หลังจากจองสำเร็จ ให้แสดงฟอร์มรีวิว
+            setTimeout(() => {
+                showReviewModal();
+            }, 1500);
+        }
+
+        // ฟังก์ชันแก้ไขการจอง
+        function editBooking() {
+            if (bookingLocked) {
+                alert("ไม่สามารถแก้ไขได้ เนื่องจากยืนยันการจองแล้ว");
+                return;
+            }
+            document.getElementById("confirmBox").style.display = "none";
+            document.getElementById("calendarBox").style.display = "block";
+        }
+
+        // ฟังก์ชันยกเลิกการจอง
+        function cancelBooking() {
+            document.getElementById("confirmBox").innerHTML = `<p class="message">ลูกค้าได้ยกเลิกการจองเรียบร้อยแล้ว ขอบคุณค่ะ</p>`;
+
+            // ส่งการแจ้งเตือนการยกเลิกผ่าน LINE
+            const cancelMessage = `❌ ยกเลิกการจอง
+ชื่อ: ${booking.name}
+เบอร์โทร: ${booking.phone}
+วันที่: ${booking.date}
+เวลา: ${booking.time}`;
+
+            sendToLine(cancelMessage)
+                .then(() => console.log("ส่งการแจ้งเตือนการยกเลิกการจองผ่าน LINE สำเร็จ"))
+                .catch(error => console.error("ไม่สามารถส่งการแจ้งเตือนผ่าน LINE ได้:", error));
+
+            setTimeout(() => {
+                showPage("home");
+            }, 2000);
+        }
+
+        // ฟังก์ชันตั้งค่าคะแนนรีวิวใน modal
+        function setModalRating(stars) {
+            currentRating = stars;
+            document.querySelectorAll("#modalStars span").forEach((s, i) => {
+                s.classList.toggle("active", i < stars);
+            });
+        }
+
+        // ฟังก์ชันแสดง modal รีวิว
+        function showReviewModal() {
+            const modal = document.getElementById("reviewModal");
+            modal.style.display = "flex";
+
+            // รีเซ็ตฟอร์มรีวิว
+            document.getElementById("reviewerName").value = "";
+            document.getElementById("reviewComment").value = "";
+            currentRating = 0;
+            document.querySelectorAll("#modalStars span").forEach(s => {
+                s.classList.remove("active");
+            });
+            document.getElementById("thanksMsg").innerText = "";
+        }
+
+        // ฟังก์ชันปิด modal รีวิว
+        function closeReviewModal() {
+            document.getElementById("reviewModal").style.display = "none";
+        }
+
+        // ฟังก์ชันส่งรีวิว
+        function submitReview() {
+            const reviewerName = document.getElementById("reviewerName").value || "ไม่ระบุชื่อ";
+            const comment = document.getElementById("reviewComment").value;
+
+            if (currentRating === 0) {
+                alert("กรุณาให้คะแนนดาวก่อนส่งรีวิว");
+                return;
+            }
+
+            // บันทึกรีวิว
+            reviews.push({
+                name: reviewerName,
+                rating: currentRating,
+                comment: comment,
+                date: new Date().toLocaleDateString('th-TH')
+            });
+            localStorage.setItem('reviews', JSON.stringify(reviews));
+
+            document.getElementById("thanksMsg").innerText = "ขอบคุณค่ะสำหรับการรีวิว";
+
+            // ปิด modal หลังจาก 3 วินาที
+            setTimeout(() => {
+                closeReviewModal();
+                showPage("home");
+            }, 3000);
+        }
+
+        // ฟังก์ชันล็อคอินด้วย LINE
+        function loginWithLine() {
+            // ในทางปฏิบัติควรใช้ LINE Login API
+            // ตัวอย่างนี้ใช้การจำลองสำหรับการทดสอบ
+            const lineUserId = prompt("กรุณากรอก LINE User ID ของคุณ (สำหรับการทดสอบ)");
+            if (lineUserId) {
+                // ตรวจสอบว่าเป็นเจ้าของร้านหรือไม่ (ในที่นี้ใช้การตรวจสอบแบบง่าย)
+                if (lineUserId === "muksalon157") { // เปลี่ยนเป็น ID จริงของเจ้าของร้าน
+                    isLoggedIn = true;
+                    document.body.classList.add('logged-in');
+                    alert("ล็อคอินสำเร็จ");
+                } else {
+                    alert("คุณไม่มีสิทธิ์เข้าถึงส่วนนี้");
+                }
+            }
+        }
+
+        // ฟังก์ชันล็อกเอาท์
+        function logout() {
+            isLoggedIn = false;
+            document.body.classList.remove('logged-in');
+            alert("ล็อกเอาท์เรียบร้อย");
+        }
+
+        // ฟังก์ชันแสดงวันหยุด
+        function renderHolidays() {
+            const ul = document.getElementById("holidayList");
+            ul.innerHTML = "";
+            holidays.forEach((day, index) => {
+                let li = document.createElement("li");
+                li.className = "holiday-item";
+
+                let span = document.createElement("span");
+                span.textContent = day;
+
+                let deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "ลบ";
+                deleteBtn.className = "delete-btn";
+                deleteBtn.onclick = function () { deleteHoliday(index); };
+
+                li.appendChild(span);
+                if (isLoggedIn) {
+                    li.appendChild(deleteBtn);
+                }
+                ul.appendChild(li);
+            });
+        }
+
+        // ฟังก์ชันแสดงบริการ
+        function renderServices() {
+            const ul = document.getElementById("servicesList");
+            ul.innerHTML = "";
+            services.forEach((service, index) => {
+                let li = document.createElement("li");
+                li.className = "service-item";
+
+                let span = document.createElement("span");
+                span.textContent = service;
+
+                let deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "ลบ";
+                deleteBtn.className = "delete-btn";
+                deleteBtn.onclick = function () { deleteService(index); };
+
+                li.appendChild(span);
+                if (isLoggedIn) {
+                    li.appendChild(deleteBtn);
+                }
+                ul.appendChild(li);
+            });
+        }
+
+        // ฟังก์ชันเพิ่มบริการ
+        function addService() {
+            const name = document.getElementById("newServiceName").value;
+            const price = document.getElementById("newServicePrice").value;
+
+            if (!name || !price) {
+                alert("กรุณากรอกชื่อบริการและราคา");
+                return;
+            }
+
+            services.push(`${name} ${price} บาท`);
+            localStorage.setItem('services', JSON.stringify(services));
+
+            document.getElementById("newServiceName").value = "";
+            document.getElementById("newServicePrice").value = "";
+
+            renderServices();
+            alert("เพิ่มบริการเรียบร้อยแล้ว");
+        }
+
+        // ฟังก์ชันลบบริการ
+        function deleteService(index) {
+            if (!isLoggedIn) {
+                alert("กรุณาล็อคอินก่อนลบข้อมูล");
+                return;
+            }
+
+            if (confirm("คุณแน่ใจว่าต้องการลบบริการนี้?")) {
+                services.splice(index, 1);
+                localStorage.setItem('services', JSON.stringify(services));
+                renderServices();
+                alert("ลบบริการเรียบร้อยแล้ว");
+            }
+        }
+
+        // ฟังก์ชันเพิ่มวันหยุด
+        function addHoliday() {
+            const newHoliday = document.getElementById("newHoliday").value;
+            if (!newHoliday) {
+                alert("กรุณาเลือกวันที่");
+                return;
+            }
+
+            holidays.push(newHoliday);
+            localStorage.setItem('holidays', JSON.stringify(holidays));
+
+            document.getElementById("newHoliday").value = "";
+            renderHolidays();
+            alert("เพิ่มวันหยุดเรียบร้อยแล้ว");
+        }
+
+        // ฟังก์ชันลบวันหยุด
+        function deleteHoliday(index) {
+            if (!isLoggedIn) {
+                alert("กรุณาล็อคอินก่อนลบข้อมูล");
+                return;
+            }
+
+            if (confirm("คุณแน่ใจว่าต้องการลบวันหยุดนี้?")) {
+                holidays.splice(index, 1);
+                localStorage.setItem('holidays', JSON.stringify(holidays));
+                renderHolidays();
+                alert("ลบวันหยุดเรียบร้อยแล้ว");
+            }
+        }
+
+        // ฟังก์ชันแสดงโปรโมชัน
+        function renderPromotions() {
+            const container = document.getElementById("promoContent");
+            container.innerHTML = "";
+
+            if (promotions.length === 0) {
+                container.innerHTML = "<p>ยังไม่มีโปรโมชัน</p>";
+                return;
+            }
+
+            promotions.forEach((promo, index) => {
+                const promoDiv = document.createElement("div");
+                promoDiv.className = "promo-item";
+
+                const promoContent = document.createElement("div");
+                promoContent.innerHTML = `
+                    <h3>${promo.title}</h3>
+                    <p>${promo.description}</p>
+                    ${promo.image ? `<img src="${promo.image}" alt="${promo.title}" style="max-width: 100%;">` : ''}
+                `;
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "ลบโปรโมชัน";
+                deleteBtn.className = "delete-btn";
+                deleteBtn.onclick = function () { deletePromo(index); };
+
+                promoDiv.appendChild(promoContent);
+                if (isLoggedIn) {
+                    promoDiv.appendChild(deleteBtn);
+                }
+                container.appendChild(promoDiv);
+            });
+        }
+
+        // ฟังก์ชันเพิ่มโปรโมชัน
+        function addPromo() {
+            const title = document.getElementById("promoTitle").value;
+            const description = document.getElementById("promoDescription").value;
+            const fileInput = document.getElementById("promoImageFile");
+            const file = fileInput.files[0];
+
+            if (!title || !description) {
+                alert("กรุณากรอกหัวข้อและรายละเอียดโปรโมชัน");
+                return;
+            }
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    promotions.push({ title, description, image: e.target.result });
+                    localStorage.setItem('promotions', JSON.stringify(promotions));
+                    resetForm();
+                    renderPromotions();
+                    alert("เพิ่มโปรโมชันเรียบร้อยแล้ว");
+                };
+                reader.readAsDataURL(file); // แปลงรูปเป็น Base64
+            } else {
+                promotions.push({ title, description, image: "" });
+                localStorage.setItem('promotions', JSON.stringify(promotions));
+                resetForm();
+                renderPromotions();
+                alert("เพิ่มโปรโมชันเรียบร้อยแล้ว");
+            }
+        }
+
+        // ฟังก์ชันลบโปรโมชัน
+        function deletePromo(index) {
+            if (!isLoggedIn) {
+                alert("กรุณาล็อคอินก่อนลบข้อมูล");
+                return;
+            }
+
+            if (confirm("คุณแน่ใจว่าต้องการลบโปรโมชันนี้?")) {
+                promotions.splice(index, 1);
+                localStorage.setItem('promotions', JSON.stringify(promotions));
+                renderPromotions();
+                alert("ลบโปรโมชันเรียบร้อยแล้ว");
+            }
+        }
+
+        // รีเซ็ตฟอร์ม
+        function resetForm() {
+            document.getElementById("promoTitle").value = "";
+            document.getElementById("promoDescription").value = "";
+            document.getElementById("promoImageFile").value = "";
+        }
+
+        // ฟังก์ชันแสดงรีวิว
+        function renderReviews() {
+            const container = document.getElementById("reviewsList");
+            container.innerHTML = "";
+
+            if (reviews.length === 0) {
+                container.innerHTML = "<p>ยังไม่มีรีวิว</p>";
+                return;
+            }
+
+            // เรียงรีวิวจากล่าสุดไปเก่าสุด
+            const sortedReviews = [...reviews].reverse();
+
+            sortedReviews.forEach((review, index) => {
+                const reviewDiv = document.createElement("div");
+                reviewDiv.className = "review-item";
+
+                let stars = "";
+                for (let i = 0; i < 5; i++) {
+                    stars += i < review.rating ? "★" : "☆";
+                }
+
+                reviewDiv.innerHTML = `
+                    <div class="review-name">${review.name}</div>
+                    <div class="review-stars">${stars}</div>
+                    <div>${review.comment || "ไม่มีคำอธิบาย"}</div>
+                    <div style="font-size: 12px; color: #777;">${review.date}</div>
+                `;
+
+                // เพิ่มปุ่มลบสำหรับเจ้าของร้าน
+                if (isLoggedIn) {
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.textContent = "ลบรีวิว";
+                    deleteBtn.className = "delete-btn";
+                    deleteBtn.onclick = function () {
+                        // คำนวณดัชนีที่ถูกต้องเนื่องจากเรียงลำดับใหม่
+                        const actualIndex = reviews.length - 1 - index;
+                        deleteReview(actualIndex);
+                    };
+                    reviewDiv.appendChild(deleteBtn);
+                }
+
+                container.appendChild(reviewDiv);
+            });
+        }
+
+        // ฟังก์ชันลบรีวิว
+        function deleteReview(index) {
+            if (!isLoggedIn) {
+                alert("กรุณาล็อคอินก่อนลบข้อมูล");
+                return;
+            }
+
+            if (confirm("คุณแน่ใจว่าต้องการลบรีวิวนี้?")) {
+                reviews.splice(index, 1);
+                localStorage.setItem('reviews', JSON.stringify(reviews));
+                renderReviews();
+                alert("ลบรีวิวเรียบร้อยแล้ว");
+            }
+        }
+
+        // ฟังก์ชันแสดงการจอง
+        function renderBookings() {
+            const container = document.getElementById("bookingList");
+            container.innerHTML = "";
+
+            if (bookings.length === 0) {
+                container.innerHTML = "<p>ยังไม่มีรายการจอง</p>";
+                return;
+            }
+
+            // เรียงการจองจากล่าสุดไปเก่าสุด
+            const sortedBookings = [...bookings].reverse();
+
+            sortedBookings.forEach((booking, index) => {
+                const bookingDiv = document.createElement("div");
+                bookingDiv.className = "booking-item";
+
+                bookingDiv.innerHTML = `
+                    <p><strong>ชื่อ:</strong> ${booking.name}</p>
+                    <p><strong>โทร:</strong> ${booking.phone}</p>
+                    <p><strong>วันที่:</strong> ${booking.date}</p>
+                    <p><strong>เวลา:</strong> ${booking.time}</p>
+                    <p><strong>จองเมื่อ:</strong> ${new Date(booking.timestamp).toLocaleString('th-TH')}</p>
+                `;
+
+                // เพิ่มปุ่มลบสำหรับเจ้าของร้าน
+                if (isLoggedIn) {
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.textContent = "ลบการจอง";
+                    deleteBtn.className = "delete-btn";
+                    deleteBtn.onclick = function () {
+                        // คำนวณดัชนีที่ถูกต้องเนื่องจากเรียงลำดับใหม่
+                        const actualIndex = bookings.length - 1 - index;
+                        deleteBooking(actualIndex);
+                    };
+                    bookingDiv.appendChild(deleteBtn);
+                }
+
+                bookingDiv.innerHTML += "<hr>";
+                container.appendChild(bookingDiv);
+            });
+        }
+
+        // ฟังก์ชันลบการจอง
+        function deleteBooking(index) {
+            if (!isLoggedIn) {
+                alert("กรุณาล็อคอินก่อนลบข้อมูล");
+                return;
+            }
+
+            if (confirm("คุณแน่ใจว่าต้องการลบการจองนี้?")) {
+                bookings.splice(index, 1);
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                renderBookings();
+                alert("ลบการจองเรียบร้อยแล้ว");
+            }
+        }
+
+        // ฟังก์ชั่นอัปโหลดพื้นหลัง
+        function uploadBackground(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    localStorage.setItem('backgroundImage', e.target.result);
+                    document.body.style.backgroundImage = `url(${e.target.result})`;
+                    alert("อัปโหลดพื้นหลังสำเร็จ");
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // ฟังก์ชั่นลบพื้นหลัง
+        function removeBackground() {
+            localStorage.removeItem('backgroundImage');
+            document.body.style.backgroundImage = '';
+            alert("ลบพื้นหลังเรียบร้อยแล้ว");
+        }
+
+        // โหลดพื้นหลังเมื่อเริ่มต้นแอป
+        const savedBg = localStorage.getItem('backgroundImage');
+        if (savedBg) {
+            document.body.style.backgroundImage = `url(${savedBg})`;
+        }
+
+        // โหลดข้อมูลเมื่อเริ่มต้น
+        window.onload = function () {
+            renderHolidays();
+            renderServices();
+            renderPromotions();
+            renderReviews();
+
+            // เพิ่ม event listener สำหรับคลิกนอก modal เพื่อปิด
+            document.getElementById("reviewModal").addEventListener("click", function (e) {
+                if (e.target === this) {
+                    closeReviewModal();
+                    showPage("home");
+                }
+            });
+            
+            document.getElementById("lineLoginModal").addEventListener("click", function (e) {
+                if (e.target === this) {
+                    closeLineLoginModal();
+                }
+            });
+        };
+    </script>
+</body>
+
+</html>
